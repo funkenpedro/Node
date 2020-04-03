@@ -1,0 +1,121 @@
+install another version of npm
+npm i -g npm@5.5.1 //g is global for all applications, 5.5.1 is the version
+
+
++++++++++++++++++++++++++
+to create a package, create a package.json file wiht 
+npm init  --yes //switch accepts defaults
+
+
++++++++++++++++++++
+npm install
+stores the node module in node modules folder,
+and adds name as a dependency to package.json
+
+
+++++++++++++++++++++++++
+use the require function to import a module
+looks for name in order of:
+// Core Module
+// file or folder
+//node_modules
+
+++++++++++++++++++++++++
+npm packages and source control
+node modules folder can get large
+the packages can be excluded for 
+passing to version control
+
+to exclude it from git
+add a file called .gitignore
+in it add the folder
+node_modules/			//the
+
+
++++++++++++++++++++++++++++++
+semantic version
+for example,the package:
+"mongoose":"4.13.6" //majorVersion.minorVersion.PatchVersion
+syntax to select major version is ^4.x.x
+syntax to select major and minor is ~4.1.x
+
+
+
++++++++++++++++++++++++++++++
+npm view "module-name" dependencies
+npm outdated will show which modules are out of datenpm
+npm update will update but not to a new major release
+
+npm install -g npm-check-updates to update to new major release.
+
+
+++++++++++++++++++++++++++++++++++++
+UPDATING LOCAL PACKAGES TO MAJOR VERSION
+npm i -g npm-check-updates
+this tool checks to see what is up to date.
+run with ncu -u
+-u updates package.json
+then run npm install to get the latest version
+
+
+
++++++++++++++++++++++++++++++++++++++
+development dependancies like testing modules
+shouldnt be included with production code
+use .gitignore for this
+to install a development dependancy use 
+npm i "package" --save-dev
+package is still in node  modules folder, just segregated
+in package.json
+
+
+
+++++++++++++++++++++++++++++++++++++++
+UN|INSTALL package
+use npm uninstall
+ 
+
++++++++++++++++++++++++++++++
+use npm i package@1.2.3 to install specific versions
+use npm list to show packages
+use npm outdated to show outdated packages
+use npm update to update to latest minor version
+
+
++++++++++++++++++++++++++++++++++
+INSTALL GLOBALLY
+use -g flag
+can use -g flag for other commands like npm outdated -g
+
+++++++++++++++++++++++++++++
+CREATE NPM LIBRARY
+create folder
+npm init --yes //creates package.json
+create index.js
+add - module.exports.add = function(a,b){return a+b}
+add a simple function
+create account with:
+	npm adduser
+npm login
+npm publish
+in package.json, make sure there is a unique name
+
+to use the library in another project, start the project
+create new folder
+npm init
+npm i newpackage
+in the index.js file
+const myModule = require(packageName)
+
+++++++++++++++++++++++++++++++++++++++
+updating a package
+
+use npm version minor  (use major or patch in case)
+//this updates the version number
+use npm publish to update repository
+
+
+
+
+
+
