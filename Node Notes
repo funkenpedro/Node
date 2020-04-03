@@ -1,0 +1,65 @@
+examples of global objects are:
+console
+
+setTimeout
+clearTimeout
+setInterval
+clearInterval
+
+window is usually the global scope in javascript
+declared variables become part of the global object
+
+In node the global scope is called global instead of window
+declared variables do not become part of global object
+THEY CAN ONLY BE ACCESSSED IN  THEIR FILE
+
+Modules are used to share objects between files
+files are considered modules
+try console.log(module) - it returns the file's properties
+
+the methods in a module are private
+you can make it public with 
+
+module.exports.
+
+modules are always wrapped in a function:
+
+function(exports, requier, module, __filename, __dirname){}
+this expression is invisible, you can access any of these properties
+
+
+
++++++++++++++++++++++++++++++++++
+Useful built in modules
+go to nodejs.org - docs to read up on them
+
+Important built in modules:
+Path 
+OS
+the require statement requires no path so:
+const os = require('os')  
+fs  - filesystem -- avoid using synchronous methods
+
+++++++++++++++++++++++++++++++++
+events
+http is a node class
+to build a webserver, listen to a port
+the object raises events when it ges a request
+
+Node Documentation:
+Class EventEmitter
+
+in vscode:
+const EventEmitter = require('events')
+const emitter = new EventEmitter();
+
+emitter.emit('messageLogged', {argument object})
+//register a listener
+emitter.on (' messageLogged', callback)   //.on is an alias for .addListener
+
+
+
+callback(args){}
+
+
+
