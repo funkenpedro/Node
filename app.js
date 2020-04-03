@@ -1,15 +1,12 @@
-const path = require("path");
-var pathObject = path.parse(__filename);
+const EventEmitter = require("events");
 
-const fs = require("fs");
-const files = fs.readdirSync("./");
+const Logger = require("./logger");
 
-asynchfileconsts = fs.readdir("./", function(err, result) {
-  if (err) {
-    console.log("Error", err);
-  } else console.log("asynghfiles", result);
+const logger = new Logger();
+
+logger.on("messageLogged", arg => {
+  //.on is the same ass .addListener
+  console.log("Listener called", arg);
 });
 
-console.log("dir object: ", files);
-
-//console.log(module);
+logger.log("message");
