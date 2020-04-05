@@ -1,0 +1,16 @@
+Express is framework for building web applications
+Representational State Transfer - REST
+
+Client does crud operations
+Create
+Read
+Update
+Delete
+
+http://vidly.com/api/customers in REST customers represents a resource
+the whole address is an endpoint
+
+http methods are: get post put delete
+
+get api/customers should respond with customer object.
+for put,(update with data) a body object needs to be sent also

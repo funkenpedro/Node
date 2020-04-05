@@ -1,0 +1,25 @@
+app.get('/api/courses', (req, res)=>{
+res.send([1,2,3])
+})
+
+single parameter
+app.get('/api/courses/:id', (req, res)=>{
+res.send(req.params.id)
+})
+
+multiple params
+app.get('/api/posts/:year/:month', (req, res)=>{
+res.send(req.params)
+})
+
+
+query string paramters requested with query string parameters
+like so:
+localhost:3000/api/posts/2018/1?sortBy=name 
+
+app.get('/api/posts/:year/:month', (req, res)=>{
+res.send(req.query)
+})
+
+
+

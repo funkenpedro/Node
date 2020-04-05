@@ -1,0 +1,25 @@
+CREATE EXPRESS APP
+create new folder
+-npm init
+npm install express
+
+create index.js
+- const express = require("express")
+  const app = express()
+  
+ 
+app.get('/', (req, res)=>{})
+// this get function is documented at expressjs.com
+
+NODEMON is a package that reloads node when the app changes
+
+to run the app use nodemon appname instead of node appname
+
+
++++++++++++++++++++
+PORT
+to set port to environment variable, in index.js add
+const port = process.env.PORT || 3000;
+app.listen(port, ()....)
+In windows set the Environment variable with
+set PORT=4444;
