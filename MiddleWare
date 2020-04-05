@@ -1,0 +1,200 @@
+middleware funciton takes a request object and returns output to client
+or another middleware function
+
+
+app.get((req, res)=>{})
+the route handler function is technically a middleware funciton.
+it terminates the request response cycle
+
+app.use(express.json) is a middleware function
+REQUEST => json().parse => route => RESPONSE
+
+
++++++++++++++++++++++++++++++++++++++++++
+Creating Custom Middleware function
+
+app.use(function(req, res,next){
+console.log("Logging");
+next();                       // always include next or the request will hang
+})
+
+app.use(function(req, res, next){
+console.log('Authenticating')
+next()
+})
+//these will execute in order.
+
+put these in another file:
+<logger.js>
+function log(req, res,next){
+console.log("Logging");
+next();     
+module.exports = log;         
+
+<index.js>
+require('./logger')
+app.use(logger)
+
+Built in Middleware includes
+++++++++++++++++++++++++++++++
+app.use(express.json())
+app.use(express.urlencoded()) -- turns html input like forms into a json format
+app.use(express.static(<dirName>) -- serves static files from root dirName when root/filename of app is requested
+
+
+Third party middleware
++++++++++++++++++++++++++++++++
+go to expressjs.com
+helmet is  an example -gives some security?
+morgan is another - it logs http requests
+
+installation and use:
+
+npm i helmet
+const helmet = require('helmet')
+app.use(helmet()) --
+
+
+
+Environments
+++++++++++++++++++++++++
+is your code working in development or production
+you can choose what functions or middleware runs in which environment
+
+process.env.NODE_ENV can be set from the terminal
+
+<index.js>
+console.log(`node_env: ${process.env.NODE_ENV}`)
+console.log(app.get('env')) this returns development as default 
+
+if (app.get('env') === 'development')
+{app.use(morgan())}
+
+set NODE_ENV=production - to set node environment variable
+testing, staging, development, production
+
+++++++++++++++++++++++++++++++++++++++
+Configuration settings
+like which database to use
+
+rc is an npm package for returning configuration options
+
+config is another npm package
+mosh says it is better than rc
+
+npm -i config
+
+create a config folder in the project folder
+create a default.json{name:"my express app"}
+create a development.json{name:"my express app", "mail":{host:"development mail server"}
+create a production.json {name:"my production", }
+
+
+<index.js>
+const config = require('config')
+
+console.log('application name' + config.get('name'))
+console.log('application name' + config.get('mail.host'))
+
+to use environment variables to pass in data like passwords create a file in config folder
+called custom-environment-variables.json
+
+in it add{
+			"mail":{
+				"password":"app_password"}}
+				
+in command prompt use set app_password=1234
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+Debugging
+use the debug function in node and use an environment variable
+to turn debugging on and off, also turn levels of debug on or off
+
+npm i debug
+<index.js>
+const startupDebugger require('debug')('app:startup');
+const dbDebugger require('debug')('app:db');
+
+startupDebugger("shit I want to log about startup")
+dbDebugger("shit I want to log about db")
+
+in console
+set DEBUG=app:startup
+or 
+set DEBUG:app:startup, app.db
+or 
+set DEBUG = app:*
+
+DEBUG=app:db nodeman index.js //sets env variable for this run?
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+Templating Engines
+
+useful for returning html markup to the client:
+Pug
+Mustache
+EJS
+
+npm i pug
+<index.js>
+app.set('view engine', 'pug') //express will load the pug module here
+app.set('views', './views') // overrides all the views in ./views
+
+add a views folder
+add file index.pug
+<index.pug>
+html
+	head
+		title=title
+	body
+		h1 = message
+		
+<index.js>
+app.get('/', (req,res)=>{
+res.render('index', {title:'my Express App', message:'hello'})})
+ 
+
+++++++++++++++++++++++++++++++++++++++++
+Database Integration
+
+expressjs guide database-integration will show all the interfaces available
+
+for instance
+npm install mongodb
+var mongoClient = require('mongodb')
+
+Mongoose is written on top of this which has a simpler api
+
+
++++++++++++++++++++++++++++++++++++++++++++
+Authentication
+- coming later in the course
+
+++++++++++++++++++++++++++++++++++++++++++++
+Structuring Express Applications
+
+take the api endpoints 
+(routes for courses should be in courses.js)
+create a folder called routes
+<courses.js>
+const expres = require('express')
+const app = express() //this will not work
+use:
+const router = express.Router()
+-change all app references to router
+module.exports = router
+
+<index.js>
+const courses = require(./courses)
+
+app.use('/api/courses', courses)
+//then you can remove '/api/courses' from the courses route
+and replace it with '/:id' for example
+
+YOU CAN DO The same for middleware 
+move it to another folder and change the require to include the new directory
+
+
