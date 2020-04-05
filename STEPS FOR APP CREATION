@@ -5,6 +5,15 @@ add .gitignore file with node_modules
 npm install joi
 npm install express
 
+
+
 add listener at end of file
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`listening on port ${port}`));
+
+start your file with:
+
+const express = require("express");
+const app = express();
+app.use(express.json());
+const Joi = require("joi");
