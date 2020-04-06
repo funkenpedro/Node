@@ -1,0 +1,113 @@
+Asynchrounous Programming
+
+Asynch does not mean concurrent or multithreaded
+javascript runs on a single thread
+disk or network access functions are asynchronous
+
++++++++++++++++++++++++++++++
+Patterns for Dealing with Asynch Code
+
+to deal with results from asynch functions use
+callbacks
+promises
+asynch/await
+
+//Callbacks
+function callWebService(param, callback)
+{
+	setTimeout(()=>{
+	callback(dataRetrieved)
+	}, 1000);
+}
+
+callWebService("myId", myCallback)
+{
+	
+}
+
+
+Callbacks can produce deeply nested structures can get very 
+messy so it is often better to use promises:
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+PROMISE is an object that holds the eventual result of an asynch operation
+it has 3 states
+Pending, - waiting
+Resolved, - got the result
+Rejected - there was an error
+
+const p = new Promise(function(resolve, reject){
+	//start an async operation
+	//...
+	setTimeout(()=>{resolve(1)}, 1000)
+	//resolve(1) sending this value to the consumers of the promise object it is successful
+	//reject(new Error('message'))	
+});
+
+//then consume the promise
+p.then(result => console.log('result', result))
+ .catch(err => console.log("Error", err.mesage))
+ 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+MODIFY CALLBACK TO RETURN PROMISE
+instead of 
+
+function getUser(id, callback){...}
+use
+function getUser(id)
+return new Promise((resolve, reject)=>
+	setTimeout(()=>{resolve({id:"myID", gitusername:"[pedro"})}, 2000)
+	)
+
+CONSUMING THE Promise
+const p = getUser(1)
+p.then(user =>{console.log(user)})
+
+--OR--
+getUser(1)
+	.then(user)=>getRepositories(user.gitHubUsername)) //if getRepositories is also a promise you 
+	.then (repos) =>  getCommits(repos[0])                        //can cascade the thens
+	.then(commits => console.log('Commits', commits)
+	.catch(err=>console.log('Error', err.message));
+	
+	
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+PROMISE METHODS AVAILABLE
+
+// you can use the Promise class to send a resolve or error immediately for the purpose of testing
+const p = Promise.resolve({id:1})
+p.then(result => console.log(result))
+or
+const e = |Promise.reject(new Error('reason for rejection'))
+e.then(error => console.log(error))
+
+
++++++++++++++++++++++++++++++++++++++++++++++
+PARALLEL PROMISES
+
+//returning to client when all promises are fulfilled
+
+const p1 = new Promise ... setTimeout{resolve(1)}
+const p2 = new Promise ... setTimeout(resolve(2))
+
+Promise.all([p1,p2])
+	.then(result => {console.log(result)})
+//returns
+[1,2]
+// if you add a catch here and one of the promises fails,
+//the whole promise will fail
+
+Promise.race([p1, p2]) will return the resolve from the first fulfilled promise
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+//Async and Await
+
+an async function returns an empty Promise<void>
+
+to use an await you have to decorate the function containing the await with asynch
+
+async function displayCommits(){
+	const user = await getUser(1)
+	const repos = await getRepositories(user.name)
+}
