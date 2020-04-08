@@ -1,0 +1,100 @@
+mongodb is a no sql database
+no tables, schemas, views ,columns
+
+you store json objects
+
++++++++++++++++++++++++++++++
+setup:
+installed mongodb and mongodbcompass
+
+add C:\Program Files\MongoDB\Server\4.2\bin to the PATH
+create directory:
+c:\data\db
+start database server with:
+mongod
+
+create project folder
+npm init, npm install mongoose
+
+add this code to index.js:
+<const mongoose = require("mongoose");
+
+mongoose
+  .connect("mongodb://localhost/playground") // should come from configuration file, this statement will create the database
+  .then(() => console.log("connnect to mongodb"))
+  .catch((err) => console.error(err.message));
+>
+
+then create a schema
+notes:
+collections and documents in mongo are like tables and rows in sql
+documents are key value pairs
+schema describes the documents
+Schema types are: String, number, date, buffer, boolesan, objectid, array
+
+Create schema with:
+const courseSchema = new mongoose.Schema({
+  name: String,
+  author: String,
+  tags: [String],
+  date: { type: Date, default: Date.now },
+  isPublished:Boolean
+});
+
+Create a model with Schema
+as objects are to Classes,
+models are to schema?, not quite
+create a class with schema tho:
+
+
+const Course = mongoose.model('Course', courseSchema)  // creates a class 
+const course = new Course({
+	name:"node course"
+	author: "pedro"
+	tags:['node', 'backend']
+	isPublished: true
+})
+
+course.save()//asynchronous operation
+use:
+ const result = await course.save();
+  console.log(result);
+  
++++++++++++++++++++++++++++++++++++++++
+comparison query operatort
+eq equals
+ne not equal 
+gt 
+gte
+lt
+lte
+in 
+nin
+course.find({price:10})
+course.find({price : {$gte:10, $lte:20}}) 
+course.find({price: {$in: [10,15,20]}})
+
+++++++++++++++++++++++++++++++++++
+logical query operators
+or 
+and
+
+courses.find()
+.or([{author:'pedro'}, {isPublished: true}]) //objects are filters this is an or of the two filters
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Regular expressions
+
+//get courses whose author starts with ped
+.find({author:/^ped/})
+
+ends with ro
+.find({author:/ro$/i})  - the i makes it case insensitive
+
+contains doot
+.find({author: /.*doot.*/i})
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+importing a db collection from a file:
+mongoimport --db mongo-exercises --collection courses --drop --file exercise-data.json --jsonArray

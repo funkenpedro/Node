@@ -111,3 +111,6 @@ async function displayCommits(){
 	const user = await getUser(1)
 	const repos = await getRepositories(user.name)
 }
+to catch errors, put all the awaits in  a try catch block.
+//getUser and getRepositories should return new Promise for this to work
+
