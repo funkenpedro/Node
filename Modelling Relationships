@@ -1,0 +1,22 @@
+//using references (normalization)  -> Consistency, single place to modify but requires multiple querys to load author from course
+let author={
+name:'Pedro'
+}
+let course = {
+author:'id',               //this doesn't have to relate to author object in mongodb
+//authors:['id1', id2]
+}
+//using embedded documents --> Performance, only one query, but changing author has to be done for every course
+
+let course={
+author:{name:Mosh}
+}
+
+//Hybrid Approach
+
+let author ={name:mosh,//50 other properties}
+
+let course=author{ //this gives you quick access because it is a reference to the single storage of the other object
+id:'ref',
+name:'Mosh'
+}
